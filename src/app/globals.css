@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+:root {
+  --bg-deep: #0a0a0a;
+  --bg-card: #111111;
+  --gold: #d4af37;
+  --gold-light: #c9a876;
+  --gold-dark: #b8860b;
+  --cream: #f5f0e8;
+}
+
+@theme inline {
+  --color-bg-deep: var(--bg-deep);
+  --color-bg-card: var(--bg-card);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-dark: var(--gold-dark);
+  --color-cream: var(--cream);
+  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-inter);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg-deep);
+  color: var(--cream);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+.font-serif {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+/* Gold gradient text utility */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gold border accent */
+.border-gold-gradient {
+  border-image: linear-gradient(135deg, #d4af37, #b8860b) 1;
+}
+
+/* Product card hover glow */
+.product-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(212, 175, 55, 0.15);
+}
+
+/* Gold line divider */
+.gold-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #d4af37, transparent);
+}
+
+/* Admin light theme overrides */
+.admin-layout {
+  background: #f8f9fa;
+  color: #1a1a1a;
+}
+
+input,
+textarea,
+select {
+  outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  ring-color: #d4af37;
+}
