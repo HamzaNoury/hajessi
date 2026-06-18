@@ -24,6 +24,16 @@ export async function saveProducts(products: Product[]): Promise<void> {
 }
 
 export async function getFeaturedProducts(): Promise<Product[]> {
+  return getProducts();
+}
+
+export async function getAvailableProducts(): Promise<Product[]> {
+  return getProducts();
+}
+
+export async function getProductsByCategory(
+  category: Product["category"]
+): Promise<Product[]> {
   const products = await getProducts();
-  return products.filter((p) => p.featured).slice(0, 4);
+  return products.filter((p) => p.category === category);
 }

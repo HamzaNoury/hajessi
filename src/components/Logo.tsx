@@ -1,27 +1,29 @@
+import Image from "next/image";
 import Link from "next/link";
 import { BRAND } from "@/lib/config";
 
-export function Logo({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
-  const sizes = {
-    sm: "h-10 w-10 text-lg",
-    md: "h-14 w-14 text-xl",
-    lg: "h-20 w-20 text-3xl",
-  };
+const SIZES = { sm: 44, md: 60, lg: 88, xl: 150 } as const;
 
+/** Bump when logo asset changes (busts Next.js image cache). */
+const LOGO_SRC = "/images/hajessi-logo.png";
+
+export function Logo({ size = "md" }: { size?: keyof typeof SIZES }) {
+  const px = SIZES[size];
   return (
-    <Link href="/" className="flex items-center gap-3 group">
-      {/* Placeholder logo — remplacer par le vrai logo HAJESSI */}
-      <div
-        className={`${sizes[size]} rounded-full border-2 border-gold flex items-center justify-center bg-bg-card group-hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] transition-shadow`}
-        aria-label={`${BRAND.name} logo`}
-      >
-        <span className="font-serif text-gold leading-none" dir="rtl">
-          {BRAND.arabicName}
-        </span>
-      </div>
-      <span className="font-serif text-gold tracking-[0.2em] text-lg hidden sm:block">
-        {BRAND.name}
-      </span>
+    <Link
+      href="/"
+      className="inline-flex shrink-0 items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      aria-label={`${size === "xl" ? "" : "الرئيسية — "}${BRAND.arabicName}`}
+    >
+      <Image
+        src={LOGO_SRC}
+        alt="HAJESSI — هاجسي"
+        width={px}
+        height={px}
+        unoptimized
+        className="object-contain transition-opacity duration-200 group-hover:opacity-85"
+        priority={size === "xl"}
+      />
     </Link>
   );
 }

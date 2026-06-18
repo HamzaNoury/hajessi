@@ -4,6 +4,11 @@ import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import type { Product } from "@/types";
 import { trackPurchase } from "@/components/TrackingScripts";
+import { ProductImage } from "@/components/ProductImage";
+import { SectionHeading } from "@/components/SectionHeading";
+import { Container } from "@/components/ui/Container";
+import { Button } from "@/components/ui/Button";
+import { categoryLabels, formatPrice, t } from "@/lib/i18n";
 
 function CommandeForm() {
   const searchParams = useSearchParams();
@@ -28,8 +33,8 @@ function CommandeForm() {
     if (!productId) return;
     fetch(`/api/products?id=${productId}`)
       .then((r) => r.json())
-      .then((data) => setProduct(data))
-      .catch(() => setError("Impossible de charger le produit"));
+      .then(setProduct)
+      .catch(() => setError(t.order.loadError));
   }, [productId]);
 
   const total = product ? product.price * quantity : 0;
@@ -44,22 +49,16 @@ function CommandeForm() {
       const res = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          productId: product.id,
-          quantity,
-        }),
+        body: JSON.stringify({ ...form, productId: product.id, quantity }),
       });
-
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error ?? "Erreur lors de la commande");
+        throw new Error(data.error ?? t.order.error);
       }
-
       trackPurchase(product.name, total, quantity);
       setSuccess(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur inconnue");
+      setError(err instanceof Error ? err.message : t.order.error);
     } finally {
       setLoading(false);
     }
@@ -67,129 +66,189 @@ function CommandeForm() {
 
   if (success) {
     return (
-      <div className="text-center py-20">
-        <div className="w-16 h-16 mx-auto mb-6 rounded-full border-2 border-gold flex items-center justify-center">
-          <span className="text-gold text-2xl">✓</span>
-        </div>
-        <h2 className="font-serif text-3xl text-gold mb-4">Commande confirmée</h2>
-        <p className="text-cream/70 mb-8 max-w-md mx-auto">
-          Merci {form.clientName} ! Votre commande de {product?.name} ({quantity}x)
-          sera livrée à {form.city}. Paiement à la livraison.
-        </p>
-        <button
-          type="button"
-          onClick={() => router.push("/boutique")}
-          className="text-gold border border-gold/40 px-8 py-3 text-sm tracking-widest uppercase hover:bg-gold/10"
-        >
-          Retour à la boutique
-        </button>
+      <div className="bg-background pb-20">
+        <Container className="pt-10 md:pt-14">
+          <div className="max-w-md mx-auto rounded-2xl border border-border bg-surface p-8 md:p-10 text-center shadow-sm">
+            <p className="text-label text-accent mb-3">{t.order.confirmed}</p>
+            <h1 className="font-serif text-display-sm text-foreground mb-4">{t.order.received}</h1>
+            <p className="text-body text-secondary mb-4">{t.order.thanks(form.clientName, form.city)}</p>
+            <p className="inline-block text-label text-accent border border-accent/25 bg-accent/5 px-4 py-2 rounded-full mb-8">
+              {t.cod}
+            </p>
+            <Button onClick={() => router.push("/boutique")} variant="outline">
+              {t.order.backToShop}
+            </Button>
+          </div>
+        </Container>
       </div>
     );
   }
 
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
-      <div className="text-center mb-10">
-        <h1 className="font-serif text-4xl text-gold-gradient mb-3">Commande</h1>
-        <p className="text-cream/60 text-sm">Paiement à la livraison (cash on delivery)</p>
-        <div className="gold-line w-24 mx-auto mt-6" />
-      </div>
+    <div className="bg-background pb-20">
+      <Container className="pt-10 md:pt-14">
+        <SectionHeading
+          eyebrow={t.order.eyebrow}
+          title={t.order.title}
+          description={t.codShort}
+        />
+      </Container>
 
-      {product && (
-        <div className="mb-8 p-4 bg-bg-card border border-gold/20 rounded-sm flex justify-between items-center">
-          <div>
-            <p className="font-serif text-cream">{product.name}</p>
-            <p className="text-gold text-sm">
-              {product.price.toLocaleString("fr-MA")} MAD × {quantity}
-            </p>
+      <Container className="max-w-2xl">
+        <div className="rounded-2xl border border-border bg-surface shadow-sm overflow-hidden">
+          <div className="border-b border-accent/20 bg-accent/5 px-6 py-4 text-center">
+            <p className="text-label text-accent">{t.order.codBanner}</p>
           </div>
-          <p className="text-gold font-medium text-lg">
-            {total.toLocaleString("fr-MA")} MAD
-          </p>
-        </div>
-      )}
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div>
-          <label className="block text-xs text-gold uppercase tracking-widest mb-2">
-            Nom complet *
-          </label>
-          <input
-            required
-            value={form.clientName}
-            onChange={(e) => setForm({ ...form, clientName: e.target.value })}
-            className="w-full bg-bg-card border border-gold/30 text-cream px-4 py-3 rounded-sm focus:border-gold"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-gold uppercase tracking-widest mb-2">
-            Téléphone *
-          </label>
-          <input
-            required
-            type="tel"
-            value={form.phone}
-            onChange={(e) => setForm({ ...form, phone: e.target.value })}
-            className="w-full bg-bg-card border border-gold/30 text-cream px-4 py-3 rounded-sm focus:border-gold"
-            placeholder="+212 6XX XXX XXX"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-gold uppercase tracking-widest mb-2">
-            Ville *
-          </label>
-          <input
-            required
-            value={form.city}
-            onChange={(e) => setForm({ ...form, city: e.target.value })}
-            className="w-full bg-bg-card border border-gold/30 text-cream px-4 py-3 rounded-sm focus:border-gold"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-gold uppercase tracking-widest mb-2">
-            Adresse complète *
-          </label>
-          <textarea
-            required
-            rows={3}
-            value={form.address}
-            onChange={(e) => setForm({ ...form, address: e.target.value })}
-            className="w-full bg-bg-card border border-gold/30 text-cream px-4 py-3 rounded-sm focus:border-gold resize-none"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-gold uppercase tracking-widest mb-2">
-            Quantité
-          </label>
-          <input
-            type="number"
-            min={1}
-            max={product?.stock ?? 99}
-            value={quantity}
-            onChange={(e) => setQuantity(parseInt(e.target.value, 10) || 1)}
-            className="w-24 bg-bg-card border border-gold/30 text-cream px-4 py-3 rounded-sm focus:border-gold"
-          />
-        </div>
+          {product ? (
+            <div className="border-b border-border p-5 md:p-6">
+              <div className="flex gap-4 md:gap-6 items-center">
+                <div className="w-24 sm:w-28 shrink-0 rounded-xl border border-border bg-background overflow-hidden">
+                  <ProductImage src={product.imageUrl} alt={product.name} card />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-label text-secondary mb-1">
+                    {categoryLabels[product.category]}
+                  </p>
+                  <p className="font-serif text-xl text-foreground">{product.name}</p>
+                  <p className="text-sm text-secondary mt-1 tabular-nums">
+                    {formatPrice(product.price)} × {quantity}
+                  </p>
+                </div>
+                <p className="font-medium text-lg text-accent tabular-nums whitespace-nowrap">
+                  {formatPrice(total)}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="border-b border-border p-6 text-center text-secondary text-sm" role="status">
+              {t.order.loading}
+            </div>
+          )}
 
-        {error && (
-          <p className="text-red-400 text-sm">{error}</p>
-        )}
+          <form onSubmit={handleSubmit} className="p-5 md:p-8 space-y-5">
+            <div className="grid sm:grid-cols-2 gap-5">
+              {(
+                [
+                  { key: "clientName", label: t.order.fullName, type: "text", auto: "name" },
+                  { key: "phone", label: t.order.phone, type: "tel", auto: "tel" },
+                ] as const
+              ).map((f) => (
+                <div key={f.key}>
+                  <label htmlFor={f.key} className="text-label block mb-2">
+                    {f.label} <span className="text-accent">*</span>
+                  </label>
+                  <input
+                    id={f.key}
+                    required
+                    type={f.type}
+                    autoComplete={f.auto}
+                    value={form[f.key]}
+                    onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
+                    className="field-box"
+                    dir={f.key === "phone" ? "ltr" : undefined}
+                  />
+                </div>
+              ))}
+            </div>
 
-        <button
-          type="submit"
-          disabled={loading || !product}
-          className="w-full py-4 bg-gradient-to-r from-gold to-gold-dark text-bg-deep font-medium text-sm tracking-[0.2em] uppercase hover:opacity-90 transition-opacity disabled:opacity-50"
-        >
-          {loading ? "Envoi en cours..." : "Confirmer la commande"}
-        </button>
-      </form>
+            <div>
+              <label htmlFor="city" className="text-label block mb-2">
+                {t.order.city} <span className="text-accent">*</span>
+              </label>
+              <input
+                id="city"
+                required
+                type="text"
+                autoComplete="address-level2"
+                value={form.city}
+                onChange={(e) => setForm({ ...form, city: e.target.value })}
+                className="field-box"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="address" className="text-label block mb-2">
+                {t.order.address} <span className="text-accent">*</span>
+              </label>
+              <textarea
+                id="address"
+                required
+                rows={3}
+                value={form.address}
+                onChange={(e) => setForm({ ...form, address: e.target.value })}
+                className="field-box resize-none"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="qty" className="text-label block mb-2">
+                {t.order.quantity}
+              </label>
+              <div className="inline-flex items-center rounded-xl border border-border bg-background overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                  className="min-w-[44px] min-h-[44px] text-foreground hover:bg-muted transition-colors"
+                  aria-label={t.product.decrease}
+                >
+                  −
+                </button>
+                <span className="min-w-[48px] text-center tabular-nums font-medium" aria-live="polite">
+                  {quantity}
+                </span>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setQuantity((q) => Math.min(product?.stock ?? 99, q + 1))
+                  }
+                  className="min-w-[44px] min-h-[44px] text-foreground hover:bg-muted transition-colors"
+                  aria-label={t.product.increase}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            {error && (
+              <p
+                className="text-destructive text-sm rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3"
+                role="alert"
+              >
+                {error}
+              </p>
+            )}
+
+            <div className="pt-2 border-t border-border">
+              <div className="flex justify-between items-center mb-5 pt-4">
+                <span className="text-label text-secondary">{t.order.total}</span>
+                <span className="font-serif text-2xl text-accent tabular-nums">
+                  {formatPrice(total)}
+                </span>
+              </div>
+              <Button type="submit" disabled={loading || !product} className="w-full" size="lg">
+                {loading ? t.order.sending : t.order.submit}
+              </Button>
+              <p className="mt-3 text-center text-sm text-secondary">{t.product.codNote}</p>
+            </div>
+          </form>
+        </div>
+      </Container>
     </div>
   );
 }
 
 export default function CommandePage() {
   return (
-    <Suspense fallback={<div className="text-center py-20 text-cream/50">Chargement...</div>}>
+    <Suspense
+      fallback={
+        <div className="bg-background min-h-[50vh] flex items-center justify-center">
+          <p className="text-secondary" role="status">
+            {t.order.loading}
+          </p>
+        </div>
+      }
+    >
       <CommandeForm />
     </Suspense>
   );

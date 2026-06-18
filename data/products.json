@@ -1,130 +1,53 @@
 [
   {
     "id": "1",
-    "slug": "oud-royal",
-    "name": "Oud Royal",
-    "price": 750,
-    "description": "Une composition majestueuse où l'oud cambodgien rencontre la rose de Damas. Un parfum d'exception pour les âmes nobles, évoquant les palais orientaux baignés de lumière dorée.",
+    "slug": "niqaa",
+    "name": "نقاء",
+    "price": 380,
+    "description": "إكستريت دو بارفان 50 مل — رائحة نقية ومتوازنة من هاجسي. إشراقة عطرية راقية للاستعمال اليومي والمناسبات.",
     "notes": {
-      "tete": "Safran, Cardamome",
-      "coeur": "Rose de Damas, Oud",
-      "fond": "Ambre gris, Musc blanc"
+      "tete": "حمضيات، نعناع",
+      "coeur": "زهر البرتقال، ياسمين",
+      "fond": "مسك أبيض، خشب الصندل"
     },
     "category": "unisexe",
-    "imageUrl": "https://placehold.co/500x700/111111/D4AF37?text=Oud+Royal&font=playfair-display",
-    "stock": 24,
-    "featured": true
-  },
-  {
-    "id": "2",
-    "slug": "nuit-doree",
-    "name": "Nuit Dorée",
-    "price": 520,
-    "description": "L'élégance nocturne incarnée. Jasmin sambac et vanille bourbon s'enlacent dans une caresse sensuelle, comme une nuit étoilée sur les toits de Fès.",
-    "notes": {
-      "tete": "Bergamote, Poivre rose",
-      "coeur": "Jasmin sambac, Tubéreuse",
-      "fond": "Vanille bourbon, Bois de santal"
-    },
-    "category": "femme",
-    "imageUrl": "https://placehold.co/500x700/0a0a0a/C9A876?text=Nuit+Dor%C3%A9e&font=playfair-display",
-    "stock": 18,
-    "featured": true
-  },
-  {
-    "id": "3",
-    "slug": "ambre-noir",
-    "name": "Ambre Noir",
-    "price": 680,
-    "description": "Profond et mystérieux, Ambre Noir capture l'essence des nuits marocaines. Cuir fumé et encens d'Arabie créent une signature inoubliable.",
-    "notes": {
-      "tete": "Encens, Cèdre",
-      "coeur": "Cuir, Patchouli",
-      "fond": "Ambre, Benjoin"
-    },
-    "category": "homme",
-    "imageUrl": "https://placehold.co/500x700/111111/B8860B?text=Ambre+Noir&font=playfair-display",
+    "imageUrl": "/images/perfumes/studio/niqaa.png",
+    "bannerUrl": "/images/slides/niqaa-banner.png",
     "stock": 30,
     "featured": true
   },
   {
-    "id": "4",
-    "slug": "miel-d-orient",
-    "name": "Miel d'Orient",
+    "id": "2",
+    "slug": "archipel",
+    "name": "أرخبيل",
     "price": 380,
-    "description": "Douceur ensoleillée et chaleur dorée. Le miel d'acacia se mêle à l'orange amère pour une fragrance gourmande et raffinée.",
+    "description": "إكستريت دو بارفان 50 مل — أرخبيل من النوتات المنعشة والبحرية. عطر هاجسي بروح شرقية معاصرة.",
     "notes": {
-      "tete": "Orange amère, Mandarine",
-      "coeur": "Miel d'acacia, Fleur d'oranger",
-      "fond": "Caramel, Fève tonka"
+      "tete": "برغموت، ملح بحري",
+      "coeur": "لافندر، أرز",
+      "fond": "عنبر، فيتيفر"
     },
-    "category": "femme",
-    "imageUrl": "https://placehold.co/500x700/0a0a0a/D4AF37?text=Miel+d%27Orient&font=playfair-display",
-    "stock": 22,
+    "category": "unisexe",
+    "imageUrl": "/images/perfumes/studio/archipel.png",
+    "bannerUrl": "/images/slides/archipel-banner.png",
+    "stock": 25,
     "featured": true
   },
   {
-    "id": "5",
-    "slug": "sultan-elite",
-    "name": "Sultan Élite",
-    "price": 800,
-    "description": "Le summum du luxe olfactif. Réservé aux connaisseurs, ce parfum allie oud indien, safran espagnol et rose bulgare dans une symphonie royale.",
+    "id": "3",
+    "slug": "haydar",
+    "name": "حيدر",
+    "price": 380,
+    "description": "إكستريت دو بارفان 50 مل — توقيع رجالي قوي وأنيق. جلد، بخور، وأخشاب عميقة من هاجسي.",
     "notes": {
-      "tete": "Safran, Bergamote de Calabre",
-      "coeur": "Rose bulgare, Oud indien",
-      "fond": "Musc noir, Cuir de Russie"
+      "tete": "فلفل، هيل",
+      "coeur": "جلد، بخور",
+      "fond": "باتشولي، عنبر"
     },
     "category": "homme",
-    "imageUrl": "https://placehold.co/500x700/111111/D4AF37?text=Sultan+%C3%89lite&font=playfair-display",
-    "stock": 12,
-    "featured": false
-  },
-  {
-    "id": "6",
-    "slug": "rose-de-fes",
-    "name": "Rose de Fès",
-    "price": 290,
-    "description": "Hommage à la ville impériale. Rose centifolia et eau de rose distillée dans les traditions ancestrales du Maroc.",
-    "notes": {
-      "tete": "Eau de rose, Litchi",
-      "coeur": "Rose centifolia, Pivoine",
-      "fond": "Musc, Bois de cachemire"
-    },
-    "category": "femme",
-    "imageUrl": "https://placehold.co/500x700/0a0a0a/C9A876?text=Rose+de+F%C3%A8s&font=playfair-display",
-    "stock": 35,
-    "featured": false
-  },
-  {
-    "id": "7",
-    "slug": "musk-al-khalil",
-    "name": "Musk al-Khalil",
-    "price": 450,
-    "description": "Musc pur et bois précieux. Une fragrance intemporelle qui évoque la sérénité des jardins andalous.",
-    "notes": {
-      "tete": "Bergamote, Gingembre",
-      "coeur": "Musc blanc, Iris",
-      "fond": "Vétiver, Bois de gaiac"
-    },
-    "category": "unisexe",
-    "imageUrl": "https://placehold.co/500x700/111111/B8860B?text=Musk+al-Khalil&font=playfair-display",
+    "imageUrl": "/images/perfumes/studio/haydar.png",
+    "bannerUrl": "/images/slides/haydar-banner.png",
     "stock": 28,
-    "featured": false
-  },
-  {
-    "id": "8",
-    "slug": "zellige-dore",
-    "name": "Zellige Doré",
-    "price": 150,
-    "description": "Notre entrée de gamme d'exception. Fraîcheur citronnée et notes boisées légères, inspirées des motifs zellige des riads marocains.",
-    "notes": {
-      "tete": "Citron vert, Menthe",
-      "coeur": "Lavande, Géranium",
-      "fond": "Cèdre atlas, Ambre gris"
-    },
-    "category": "unisexe",
-    "imageUrl": "https://placehold.co/500x700/0a0a0a/D4AF37?text=Zellige+Dor%C3%A9&font=playfair-display",
-    "stock": 50,
-    "featured": false
+    "featured": true
   }
 ]

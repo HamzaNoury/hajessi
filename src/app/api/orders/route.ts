@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/auth";
 import { getProductById } from "@/lib/products";
+import { isProductAvailable } from "@/lib/product-utils";
 import {
   postOrderToSheet,
   getOrdersFromSheet,
@@ -43,6 +44,12 @@ export async function POST(request: Request) {
   const product = await getProductById(productId);
   if (!product) {
     return NextResponse.json({ error: "Produit introuvable" }, { status: 404 });
+  }
+  if (!isProductAvailable(product)) {
+    return NextResponse.json(
+      { error: "هذا المنتج غير متوفر حالياً" },
+      { status: 400 }
+    );
   }
 
   const order = {

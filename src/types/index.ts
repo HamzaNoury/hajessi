@@ -22,8 +22,10 @@ export interface Product {
   notes: OlfactoryNotes;
   category: ProductCategory;
   imageUrl: string;
+  bannerUrl?: string;
   stock: number;
   featured?: boolean;
+  comingSoon?: boolean;
 }
 
 export interface Order {

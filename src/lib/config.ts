@@ -31,3 +31,10 @@ export const BRAND = {
   taglineFr: "L'art de la fragrance orientale",
   taglineAr: "فن العطر الشرقي",
 } as const;
+
+export const CONTACT = {
+  phone: "+212 643-093940",
+  phoneTel: "+212643093940",
+  whatsapp: "https://wa.me/212643093940",
+  facebook: "https://www.facebook.com/profile.php?id=61569009623572",
+} as const;

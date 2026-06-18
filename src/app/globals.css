@@ -1,23 +1,40 @@
 @import "tailwindcss";
 
+/* HAJESSI Design System — ui-ux-pro-max */
 :root {
-  --bg-deep: #0a0a0a;
-  --bg-card: #111111;
-  --gold: #d4af37;
-  --gold-light: #c9a876;
-  --gold-dark: #b8860b;
-  --cream: #f5f0e8;
+  --color-primary: #1c1917;
+  --color-on-primary: #ffffff;
+  --color-secondary: #44403c;
+  --color-accent: #a16207;
+  --color-background: #fafaf9;
+  --color-foreground: #0c0a09;
+  --color-muted: #f5f5f4;
+  --color-border: #d6d3d1;
+  --color-surface: #ffffff;
+  --color-destructive: #dc2626;
+  --color-ring: #1c1917;
+
+  --font-serif: var(--font-cormorant);
+  --font-sans: var(--font-tajawal);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration: 220ms;
 }
 
 @theme inline {
-  --color-bg-deep: var(--bg-deep);
-  --color-bg-card: var(--bg-card);
-  --color-gold: var(--gold);
-  --color-gold-light: var(--gold-light);
-  --color-gold-dark: var(--gold-dark);
-  --color-cream: var(--cream);
-  --font-serif: var(--font-playfair);
-  --font-sans: var(--font-inter);
+  --color-primary: var(--color-primary);
+  --color-on-primary: var(--color-on-primary);
+  --color-secondary: var(--color-secondary);
+  --color-accent: var(--color-accent);
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-foreground);
+  --color-muted: var(--color-muted);
+  --color-border: var(--color-border);
+  --color-surface: var(--color-surface);
+  --color-destructive: var(--color-destructive);
+  --color-ring: var(--color-ring);
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
 }
 
 * {
@@ -28,58 +45,187 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 body {
-  background: var(--bg-deep);
-  color: var(--cream);
-  font-family: var(--font-inter), system-ui, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-tajawal), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
 .font-serif {
-  font-family: var(--font-playfair), Georgia, serif;
+  font-family: var(--font-cormorant), Georgia, serif;
 }
 
-/* Gold gradient text utility */
-.text-gold-gradient {
-  background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* Type scale */
+.text-display {
+  font-size: clamp(2.75rem, 6vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 400;
 }
 
-/* Gold border accent */
-.border-gold-gradient {
-  border-image: linear-gradient(135deg, #d4af37, #b8860b) 1;
+.text-display-sm {
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  font-weight: 400;
 }
 
-/* Product card hover glow */
-.product-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 32px rgba(212, 175, 55, 0.15);
+.text-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
-/* Gold line divider */
-.gold-line {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #d4af37, transparent);
+.text-body {
+  font-size: 1rem;
+  line-height: 1.7;
+  font-weight: 300;
 }
 
-/* Admin light theme overrides */
+/* Glass header */
+.glass-nav {
+  background: rgba(250, 250, 249, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Product card */
+.product-card img,
+.product-card .product-image {
+  transition: transform 0.6s var(--ease-out);
+}
+.product-card:hover .product-image {
+  transform: scale(1.03);
+}
+
+/* Perfume slider */
+.perfume-slider {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.perfume-slider::-webkit-scrollbar {
+  display: none;
+}
+.perfume-slide {
+  scroll-snap-align: start;
+}
+
+.hero-slide-text {
+  animation: rise 0.6s var(--ease-out) forwards;
+}
+
+/* Filter chip */
+.chip {
+  padding: 0.625rem 1.25rem;
+  min-height: 44px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-secondary);
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  transition: all var(--duration) var(--ease-out);
+  cursor: pointer;
+}
+.chip:hover {
+  color: var(--color-foreground);
+  background: var(--color-muted);
+}
+.chip-active {
+  color: var(--color-on-primary);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* Form */
+.field-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  padding: 0.875rem 0;
+  font-size: 1rem;
+  color: var(--color-foreground);
+  transition: border-color var(--duration);
+}
+.field-input:focus {
+  border-color: var(--color-foreground);
+  outline: none;
+  box-shadow: 0 1px 0 0 var(--color-foreground);
+}
+
+.field-box {
+  width: 100%;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  color: var(--color-foreground);
+  transition:
+    border-color var(--duration),
+    box-shadow var(--duration);
+}
+.field-box:focus {
+  border-color: var(--color-foreground);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(28, 25, 23, 0.08);
+}
+.field-box::placeholder {
+  color: var(--color-secondary);
+  opacity: 0.6;
+}
+
 .admin-layout {
   background: #f8f9fa;
   color: #1a1a1a;
 }
 
-input,
-textarea,
-select {
-  outline: none;
+::selection {
+  background: rgba(161, 98, 7, 0.15);
+  color: var(--color-foreground);
 }
 
-input:focus,
-textarea:focus,
-select:focus {
-  ring-color: #d4af37;
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-rise {
+  animation: rise 0.8s var(--ease-out) forwards;
+}
+.animate-rise-d1 {
+  animation-delay: 0.1s;
+  opacity: 0;
+}
+.animate-rise-d2 {
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+.animate-rise-d3 {
+  animation-delay: 0.3s;
+  opacity: 0;
 }

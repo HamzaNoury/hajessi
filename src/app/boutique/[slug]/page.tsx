@@ -9,7 +9,7 @@ interface Props {
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
-  if (!product) return { title: "Produit introuvable" };
+  if (!product) return { title: "المنتج غير موجود" };
   return {
     title: product.name,
     description: product.description,

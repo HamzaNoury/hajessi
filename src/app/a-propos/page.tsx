@@ -1,48 +1,44 @@
+import { ProductImage } from "@/components/ProductImage";
+import { SectionHeading } from "@/components/SectionHeading";
+import { Container } from "@/components/ui/Container";
 import { BRAND } from "@/lib/config";
+import { t } from "@/lib/i18n";
 
-export const metadata = {
-  title: "À propos",
-};
+export const metadata = { title: "عن هاجسي" };
 
 export default function AboutPage() {
   return (
-    <div className="py-16 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto">
-      <div className="text-center mb-14">
-        <h1 className="font-serif text-4xl text-gold-gradient mb-3">À propos</h1>
-        <div className="gold-line w-24 mx-auto mt-6" />
-      </div>
+    <div className="bg-background pb-20">
+      <Container className="pt-10 md:pt-14">
+        <SectionHeading
+          eyebrow={t.about.eyebrow}
+          title={t.about.title}
+          description={t.about.description}
+        />
+      </Container>
 
-      <div className="space-y-8 text-cream/75 leading-relaxed">
-        <p className="font-serif text-xl text-cream text-center italic">
-          L&apos;histoire de {BRAND.name}
-        </p>
-
-        <p>
-          Née au cœur du Maroc, <strong className="text-gold">{BRAND.name}</strong> incarne
-          l&apos;alliance parfaite entre l&apos;art ancestral de la parfumerie orientale et
-          l&apos;élégance contemporaine. Chaque création est le fruit d&apos;un savoir-faire
-          transmis de génération en génération, sublimé par des matières premières d&apos;exception.
-        </p>
-
-        <p>
-          Notre maison sélectionne avec exigence les plus nobles essences — oud cambodgien,
-          rose de Damas, safran espagnol — pour composer des fragrances qui racontent des
-          histoires. Des palais de Fès aux riads de Marrakech, chaque flacon porte en lui
-          l&apos;âme d&apos;un patrimoine olfactif millénaire.
-        </p>
-
-        <p>
-          Chez {BRAND.name}, le luxe n&apos;est pas une ostentation, mais une expérience
-          intime et raffinée. Nous croyons que le parfum est un art de vivre, une signature
-          invisible qui accompagne les moments les plus précieux de votre existence.
-        </p>
-
-        <div className="pt-8 text-center">
-          <p className="text-gold-light text-2xl" dir="rtl">
-            {BRAND.arabicName} — {BRAND.taglineAr}
-          </p>
+      <Container>
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          <ProductImage
+            src="/images/perfumes/studio/niqaa.png"
+            alt={`مجموعة ${BRAND.name}`}
+            large
+          />
+          <div className="space-y-5 text-body text-secondary lg:pt-8">
+            <p>
+              {t.about.p1}{" "}
+              <strong className="text-foreground font-medium">{BRAND.arabicName}</strong>{" "}
+              {t.about.p1b}
+            </p>
+            <p>{t.about.p2}</p>
+            <p>{t.about.p3}</p>
+            <p className="font-serif text-xl text-foreground pt-4">
+              {BRAND.arabicName} — {BRAND.taglineAr}
+            </p>
+            <p className="text-label text-accent pt-2">{t.cod}</p>
+          </div>
         </div>
-      </div>
+      </Container>
     </div>
   );
 }

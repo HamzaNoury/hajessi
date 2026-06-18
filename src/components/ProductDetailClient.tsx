@@ -1,105 +1,133 @@
 "use client";
 
-import { useEffect } from "react";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useState } from "react";
 import type { Product } from "@/types";
 import { trackViewContent } from "@/components/TrackingScripts";
+import { ProductImage } from "@/components/ProductImage";
+import { Container } from "@/components/ui/Container";
+import { Button } from "@/components/ui/Button";
+import { isProductAvailable } from "@/lib/product-utils";
+import { categoryLabels, formatPrice, t } from "@/lib/i18n";
 
-interface ProductDetailClientProps {
-  product: Product;
-}
-
-export function ProductDetailClient({ product }: ProductDetailClientProps) {
-  const [quantity, setQuantity] = useState(1);
+export function ProductDetailClient({ product }: { product: Product }) {
+  const [qty, setQty] = useState(1);
+  const available = isProductAvailable(product);
 
   useEffect(() => {
     trackViewContent(product.name, product.price);
   }, [product.name, product.price]);
 
+  const notes = [
+    { label: t.product.topNotes, value: product.notes.tete },
+    { label: t.product.heartNotes, value: product.notes.coeur },
+    { label: t.product.baseNotes, value: product.notes.fond },
+  ];
+
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-        <div className="relative aspect-[3/4] bg-bg-card border border-gold/20 rounded-sm overflow-hidden">
-          <Image
+    <div className="bg-background pb-20">
+      <Container className="pt-6 md:pt-10">
+        <nav className="text-label text-secondary mb-8" aria-label="مسار التنقل">
+          <Link href="/boutique" className="hover:text-foreground transition-colors">
+            {t.product.breadcrumb}
+          </Link>
+          <span className="mx-2">/</span>
+          <span className="text-foreground">{product.name}</span>
+        </nav>
+
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
+          <ProductImage
             src={product.imageUrl}
             alt={product.name}
-            fill
-            className="object-cover"
             priority
-            sizes="(max-width: 1024px) 100vw, 50vw"
+            hero
+            className="lg:sticky lg:top-24 lg:self-start"
           />
-        </div>
 
-        <div className="flex flex-col justify-center">
-          <p className="text-gold-light text-xs uppercase tracking-[0.4em] mb-2">
-            {product.category}
-          </p>
-          <h1 className="font-serif text-4xl md:text-5xl text-gold-gradient mb-4">
-            {product.name}
-          </h1>
-          <p className="text-2xl text-gold font-medium mb-6">
-            {product.price.toLocaleString("fr-MA")} MAD
-          </p>
-          <p className="text-cream/70 leading-relaxed mb-8">{product.description}</p>
+          <div className="py-4 lg:py-8">
+            <p className="text-label text-accent mb-2">
+              {categoryLabels[product.category]}
+            </p>
+            <h1 className="font-serif text-display-sm text-foreground mb-3">
+              {product.name}
+            </h1>
+            <p className="text-xl font-medium text-accent tabular-nums mb-6">
+              {available ? formatPrice(product.price) : t.soon}
+            </p>
 
-          <div className="mb-8 p-6 bg-bg-card border border-gold/20 rounded-sm">
-            <h2 className="font-serif text-gold text-sm tracking-widest uppercase mb-4">
-              Notes olfactives
-            </h2>
-            <div className="space-y-3 text-sm">
-              <div className="flex gap-4">
-                <span className="text-gold w-16 shrink-0">Tête</span>
-                <span className="text-cream/70">{product.notes.tete}</span>
-              </div>
-              <div className="flex gap-4">
-                <span className="text-gold w-16 shrink-0">Cœur</span>
-                <span className="text-cream/70">{product.notes.coeur}</span>
-              </div>
-              <div className="flex gap-4">
-                <span className="text-gold w-16 shrink-0">Fond</span>
-                <span className="text-cream/70">{product.notes.fond}</span>
-              </div>
+            {available ? (
+              <p className="text-label text-accent mb-8 border border-accent/30 bg-accent/5 px-4 py-3">
+                {t.codShort}
+              </p>
+            ) : (
+              <p className="text-label text-secondary mb-8 border border-border bg-muted px-4 py-3 rounded-full inline-block">
+                {t.product.soonDesc}
+              </p>
+            )}
+
+            <p className="text-body text-secondary mb-10">{product.description}</p>
+
+            <div className="border-t border-border pt-8 mb-10">
+              <h2 className="text-label text-foreground mb-6">{t.product.pyramid}</h2>
+              <dl className="space-y-4">
+                {notes.map((n) => (
+                  <div key={n.label} className="grid grid-cols-3 gap-4 text-sm">
+                    <dt className="text-label text-secondary !text-[0.7rem]">{n.label}</dt>
+                    <dd className="col-span-2 text-secondary font-light">{n.value}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
-          </div>
 
-          <div className="flex items-center gap-4 mb-6">
-            <label className="text-sm text-cream/60">Quantité</label>
-            <div className="flex items-center border border-gold/30">
-              <button
-                type="button"
-                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                className="px-4 py-2 text-gold hover:bg-gold/10"
-              >
-                −
-              </button>
-              <span className="px-4 py-2 text-cream min-w-[3rem] text-center">
-                {quantity}
-              </span>
-              <button
-                type="button"
-                onClick={() =>
-                  setQuantity((q) => Math.min(product.stock, q + 1))
-                }
-                className="px-4 py-2 text-gold hover:bg-gold/10"
-              >
-                +
-              </button>
-            </div>
-            <span className="text-cream/40 text-xs">
-              {product.stock} en stock
-            </span>
-          </div>
+            {available && (
+              <>
+                <div className="flex flex-wrap items-center gap-4 mb-8">
+                  <span className="text-label" id="qty-label">
+                    {t.product.quantity}
+                  </span>
+                  <div
+                    className="flex items-center border border-border"
+                    role="group"
+                    aria-labelledby="qty-label"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setQty((q) => Math.max(1, q - 1))}
+                      className="min-w-[44px] min-h-[44px] text-foreground hover:bg-muted transition-colors"
+                      aria-label={t.product.decrease}
+                    >
+                      −
+                    </button>
+                    <span className="min-w-[44px] text-center tabular-nums" aria-live="polite">
+                      {qty}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setQty((q) => Math.min(product.stock, q + 1))}
+                      className="min-w-[44px] min-h-[44px] text-foreground hover:bg-muted transition-colors"
+                      aria-label={t.product.increase}
+                    >
+                      +
+                    </button>
+                  </div>
+                  <span className="text-sm text-secondary">
+                    {t.product.available(product.stock)}
+                  </span>
+                </div>
 
-          <Link
-            href={`/commande?product=${product.id}&qty=${quantity}`}
-            className="block w-full text-center py-4 bg-gradient-to-r from-gold to-gold-dark text-bg-deep font-medium text-sm tracking-[0.2em] uppercase hover:opacity-90 transition-opacity"
-          >
-            Commander maintenant
-          </Link>
+                <Button
+                  href={`/commande?product=${product.id}&qty=${qty}`}
+                  size="lg"
+                  className="w-full sm:w-auto"
+                >
+                  {t.product.order}
+                </Button>
+                <p className="mt-3 text-sm text-secondary">{t.product.codNote}</p>
+              </>
+            )}
+          </div>
         </div>
-      </div>
+      </Container>
     </div>
   );
 }

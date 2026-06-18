@@ -1,11 +1,16 @@
+import { Suspense } from "react";
 import { getProducts } from "@/lib/products";
 import { BoutiqueClient } from "@/components/BoutiqueClient";
 
 export const metadata = {
-  title: "Boutique",
+  title: "المتجر",
 };
 
 export default async function BoutiquePage() {
   const products = await getProducts();
-  return <BoutiqueClient products={products} />;
+  return (
+    <Suspense>
+      <BoutiqueClient products={products} />
+    </Suspense>
+  );
 }
