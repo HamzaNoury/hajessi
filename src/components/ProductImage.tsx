@@ -25,8 +25,8 @@ export function ProductImage({
   if (card || hero) {
     return (
       <div
-        className={`relative bg-background ${
-          hero ? "aspect-[4/5] p-6 sm:p-8 md:p-10" : "aspect-[3/4] p-3 sm:p-4"
+        className={`relative ${
+          hero ? "aspect-[4/5] p-6 sm:p-8 md:p-10 bg-background" : "aspect-[4/5] p-4 sm:p-5"
         } ${className}`}
       >
         <Image

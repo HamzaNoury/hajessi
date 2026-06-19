@@ -2,12 +2,14 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import type { Product } from "@/types";
 import { trackPurchase } from "@/components/TrackingScripts";
 import { ProductImage } from "@/components/ProductImage";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
+import { QuantityStepper } from "@/components/ui/QuantityStepper";
 import { categoryLabels, formatPrice, t } from "@/lib/i18n";
 
 function CommandeForm() {
@@ -185,29 +187,13 @@ function CommandeForm() {
               <label htmlFor="qty" className="text-label block mb-2">
                 {t.order.quantity}
               </label>
-              <div className="inline-flex items-center rounded-xl border border-border bg-background overflow-hidden">
-                <button
-                  type="button"
-                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="min-w-[44px] min-h-[44px] text-foreground hover:bg-muted transition-colors"
-                  aria-label={t.product.decrease}
-                >
-                  −
-                </button>
-                <span className="min-w-[48px] text-center tabular-nums font-medium" aria-live="polite">
-                  {quantity}
-                </span>
-                <button
-                  type="button"
-                  onClick={() =>
-                    setQuantity((q) => Math.min(product?.stock ?? 99, q + 1))
-                  }
-                  className="min-w-[44px] min-h-[44px] text-foreground hover:bg-muted transition-colors"
-                  aria-label={t.product.increase}
-                >
-                  +
-                </button>
-              </div>
+              <QuantityStepper
+                value={quantity}
+                min={1}
+                max={product?.stock ?? 99}
+                onChange={setQuantity}
+                label={t.order.quantity}
+              />
             </div>
 
             {error && (
@@ -229,7 +215,12 @@ function CommandeForm() {
               <Button type="submit" disabled={loading || !product} className="w-full" size="lg">
                 {loading ? t.order.sending : t.order.submit}
               </Button>
-              <p className="mt-3 text-center text-sm text-secondary">{t.product.codNote}</p>
+              <p className="mt-3 text-center text-caption">
+                {t.product.codNote} ·{" "}
+                <Link href="/conditions" className="text-accent hover:underline">
+                  {t.legal.terms.title}
+                </Link>
+              </p>
             </div>
           </form>
         </div>

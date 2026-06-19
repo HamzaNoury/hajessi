@@ -3,9 +3,9 @@ import { type ReactNode } from "react";
 
 const variants = {
   primary:
-    "bg-accent text-white hover:opacity-90 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2",
+    "bg-accent text-white hover:opacity-90 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 shadow-sm",
   outline:
-    "border border-accent text-accent hover:bg-accent/10",
+    "border border-accent/40 text-accent hover:bg-accent/5 hover:border-accent",
   ghost: "text-foreground hover:bg-muted",
   accent:
     "bg-accent text-white hover:opacity-90 focus-visible:ring-2 focus-visible:ring-accent",
@@ -14,9 +14,9 @@ const variants = {
 } as const;
 
 const sizes = {
-  sm: "px-5 py-2.5 text-[0.62rem]",
-  md: "px-7 py-3.5 text-[0.65rem]",
-  lg: "px-9 py-4 text-[0.7rem]",
+  sm: "px-5 py-2.5 text-[0.65rem]",
+  md: "px-7 py-3 text-[0.65rem]",
+  lg: "px-9 py-3.5 text-[0.7rem]",
 } as const;
 
 interface ButtonProps {
@@ -41,7 +41,7 @@ export function Button({
   disabled,
 }: ButtonProps) {
   const base =
-    "inline-flex items-center justify-center rounded-full font-sans font-medium tracking-normal transition-all duration-200 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed";
+    "inline-flex items-center justify-center rounded-full font-sans font-medium tracking-[0.06em] uppercase transition-all duration-200 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed";
   const classes = `${base} ${variants[variant]} ${sizes[size]} ${className}`;
 
   if (href) {

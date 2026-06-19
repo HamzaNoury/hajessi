@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant, Tajawal } from "next/font/google";
+import { Amiri, Tajawal } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -7,10 +7,10 @@ import { TrackingScripts } from "@/components/TrackingScripts";
 import { BRAND } from "@/lib/config";
 import { t } from "@/lib/i18n";
 
-const cormorant = Cormorant({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+const amiri = Amiri({
+  variable: "--font-serif",
+  subsets: ["arabic", "latin"],
+  weight: ["400", "700"],
   display: "swap",
 });
 
@@ -38,7 +38,7 @@ export default function RootLayout({
     <html
       lang="ar"
       dir="rtl"
-      className={`${cormorant.variable} ${tajawal.variable}`}
+      className={`${amiri.variable} ${tajawal.variable}`}
     >
       <body className="min-h-dvh flex flex-col font-sans antialiased">
         <a

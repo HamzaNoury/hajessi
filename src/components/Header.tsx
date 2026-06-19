@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "./Logo";
+import { BRAND } from "@/lib/config";
 import { t } from "@/lib/i18n";
 
 const NAV = [
@@ -53,18 +54,24 @@ export function Header() {
 
   return (
     <>
-      <header className="fixed top-0 inset-x-0 z-50 glass-nav">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 h-16 md:h-[4.5rem] flex items-center justify-between gap-4 overflow-hidden">
+      <div className="bg-accent/8 border-b border-accent/15 text-center py-2.5 px-4">
+        <p className="text-xs text-accent font-medium">
+          {t.cod} · {t.deliveryMorocco}
+        </p>
+      </div>
+
+      <header className="sticky top-0 z-50 glass-nav">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 h-[4.25rem] md:h-[4.75rem] flex items-center justify-between gap-6">
           <Logo size="sm" />
 
-          <nav className="hidden lg:flex items-center gap-8 shrink-0" aria-label="القائمة الرئيسية">
+          <nav className="hidden lg:flex items-center gap-10" aria-label="القائمة الرئيسية">
             {NAV.map((item) => {
               const active = pathname === item.href;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-label transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md ${
+                  className={`text-label transition-colors duration-200 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md ${
                     active ? "text-foreground" : "text-secondary"
                   }`}
                 >
@@ -74,11 +81,10 @@ export function Header() {
             })}
           </nav>
 
-          <div className="hidden lg:flex items-center gap-4 shrink-0">
-            <span className="text-label text-accent hidden xl:inline">{t.cod}</span>
+          <div className="hidden lg:block">
             <Link
               href="/boutique"
-              className="text-label text-accent hover:text-foreground transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md"
+              className="inline-flex items-center justify-center rounded-full bg-accent text-white text-label font-medium px-7 py-3 hover:opacity-90 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               {t.nav.shop}
             </Link>
@@ -86,7 +92,7 @@ export function Header() {
 
           <button
             type="button"
-            className="lg:hidden min-w-[44px] min-h-[44px] flex items-center justify-center -ml-2 shrink-0"
+            className="lg:hidden min-w-[44px] min-h-[44px] flex items-center justify-center -ml-2"
             onClick={() => setMenuOpen((o) => !o)}
             aria-expanded={menuOpen}
             aria-label={menuOpen ? t.menu.close : t.menu.open}
@@ -97,7 +103,7 @@ export function Header() {
       </header>
 
       <div
-        className={`fixed inset-0 z-40 lg:hidden overflow-hidden transition-opacity duration-300 ${
+        className={`fixed inset-0 z-40 lg:hidden transition-opacity duration-300 ${
           menuOpen
             ? "opacity-100 pointer-events-auto visible"
             : "opacity-0 pointer-events-none invisible"
@@ -108,24 +114,25 @@ export function Header() {
       >
         <button
           type="button"
-          className="absolute inset-0 bg-foreground/40"
+          className="absolute inset-0 bg-foreground/50 backdrop-blur-sm"
           onClick={() => setMenuOpen(false)}
           aria-label={t.menu.closeOverlay}
         />
         <nav
-          className={`absolute top-0 left-0 h-full w-[min(100%,20rem)] bg-surface shadow-2xl overflow-hidden transition-transform duration-300 ${
-            menuOpen ? "translate-x-0 visible" : "-translate-x-[105%] invisible"
+          className={`absolute top-0 left-0 h-full w-[min(100%,22rem)] bg-surface shadow-2xl transition-transform duration-300 ${
+            menuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
           aria-label="قائمة الجوال"
           inert={!menuOpen ? true : undefined}
         >
-          <div className="flex flex-col h-full pt-20 px-8 pb-8">
-            <p className="text-label text-accent mb-6 pb-4 border-b border-border">{t.cod}</p>
+          <div className="flex flex-col h-full pt-24 px-8 pb-10">
+            <p className="font-serif text-2xl text-foreground mb-2">{BRAND.arabicName}</p>
+            <p className="text-caption mb-8 pb-6 border-b border-border">{BRAND.taglineAr}</p>
             {NAV.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="font-serif text-2xl text-foreground py-4 border-b border-border"
+                className="font-serif text-xl text-foreground py-4 border-b border-border/60 hover:text-accent transition-colors"
               >
                 {item.label}
               </Link>
@@ -133,7 +140,7 @@ export function Header() {
             <div className="mt-auto pt-8">
               <Link
                 href="/boutique"
-                className="block text-center font-sans text-label text-accent hover:text-foreground transition-colors duration-200"
+                className="block text-center rounded-full bg-accent text-white text-label font-medium px-6 py-3.5 hover:opacity-90 transition-opacity"
               >
                 {t.nav.shop}
               </Link>
@@ -141,8 +148,6 @@ export function Header() {
           </div>
         </nav>
       </div>
-
-      <div className="h-16 md:h-[4.5rem]" aria-hidden />
     </>
   );
 }

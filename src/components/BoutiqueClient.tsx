@@ -11,24 +11,13 @@ import { categoryLabels, t } from "@/lib/i18n";
 const CATEGORIES: { value: ProductCategory | "all"; label: string }[] = [
   { value: "all", label: t.boutique.all },
   { value: "homme", label: categoryLabels.homme },
-  { value: "femme", label: categoryLabels.femme },
   { value: "unisexe", label: categoryLabels.unisexe },
 ];
-
-const PRICES = [
-  { value: "all" as const, label: t.boutique.allPrices },
-  { value: "low" as const, label: t.boutique.priceLow },
-  { value: "mid" as const, label: t.boutique.priceMid },
-  { value: "high" as const, label: t.boutique.priceHigh },
-];
-
-type PriceFilter = (typeof PRICES)[number]["value"];
 
 export function BoutiqueClient({ products }: { products: Product[] }) {
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get("category");
   const [category, setCategory] = useState<ProductCategory | "all">("all");
-  const [price, setPrice] = useState<PriceFilter>("all");
 
   useEffect(() => {
     if (
@@ -43,12 +32,11 @@ export function BoutiqueClient({ products }: { products: Product[] }) {
   const filtered = useMemo(() => {
     return products.filter((p) => {
       if (category !== "all" && p.category !== category) return false;
-      if (price === "low" && p.price > 300) return false;
-      if (price === "mid" && (p.price <= 300 || p.price > 600)) return false;
-      if (price === "high" && p.price <= 600) return false;
       return true;
     });
-  }, [products, category, price]);
+  }, [products, category]);
+
+  const showFilters = products.length > 3;
 
   return (
     <div className="bg-background min-h-screen py-10 md:py-16">
@@ -59,10 +47,18 @@ export function BoutiqueClient({ products }: { products: Product[] }) {
           description={t.boutique.description}
         />
 
-        <p className="text-center text-label text-accent mb-8">{t.cod}</p>
+        <div className="flex justify-center mb-10">
+          <span className="text-label text-accent border border-accent/25 bg-accent/5 px-4 py-2 rounded-full">
+            {t.cod} · {t.deliveryMorocco}
+          </span>
+        </div>
 
-        <div className="flex flex-col gap-4 mb-12" role="group" aria-label={t.boutique.filters}>
-          <div className="flex flex-wrap justify-center gap-2">
+        {showFilters && (
+          <div
+            className="flex flex-wrap justify-center gap-2 mb-12"
+            role="group"
+            aria-label={t.boutique.filters}
+          >
             {CATEGORIES.map((c) => (
               <button
                 key={c.value}
@@ -75,34 +71,21 @@ export function BoutiqueClient({ products }: { products: Product[] }) {
               </button>
             ))}
           </div>
-          <div className="flex flex-wrap justify-center gap-2">
-            {PRICES.map((p) => (
-              <button
-                key={p.value}
-                type="button"
-                onClick={() => setPrice(p.value)}
-                className={`chip ${price === p.value ? "chip-active" : ""}`}
-                aria-pressed={price === p.value}
-              >
-                {p.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        )}
 
         {filtered.length === 0 ? (
           <p className="text-center text-secondary py-20" role="status">
             {t.boutique.empty}
           </p>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6">
-            {filtered.map((product) => (
-              <ProductCard key={product.id} product={product} compact />
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8 max-w-4xl mx-auto">
+            {filtered.map((product, i) => (
+              <ProductCard key={product.id} product={product} compact priority={i === 0} />
             ))}
           </div>
         )}
 
-        <p className="text-center mt-12 text-label text-secondary" aria-live="polite">
+        <p className="text-center mt-14 text-label text-secondary" aria-live="polite">
           {t.boutique.count(filtered.length)}
         </p>
       </Container>

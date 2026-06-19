@@ -32,9 +32,9 @@ export function ProductCard({
       <article className={`product-card group ${!available ? "opacity-90" : ""}`}>
         <Link
           href={`/boutique/${product.slug}`}
-          className="block rounded-xl border border-border bg-background overflow-hidden transition-shadow duration-200 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="block card-luxury focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
-          <div className="relative">
+          <div className="relative product-stage">
             <ProductImage
               src={product.imageUrl}
               alt={product.name}
@@ -47,19 +47,19 @@ export function ProductCard({
               </div>
             )}
           </div>
-          <div className="px-3 pb-4 pt-3 border-t border-border/60">
-            <p className="text-label text-secondary mb-0.5 text-[0.7rem]">
+          <div className="px-4 pb-5 pt-4 text-center border-t border-border/50">
+            <p className="text-label text-secondary mb-1 text-[0.65rem] tracking-widest uppercase">
               {categoryLabels[product.category]}
             </p>
-            <h3 className="font-serif text-base text-foreground group-hover:text-accent transition-colors duration-200 leading-snug">
+            <h3 className="font-serif text-lg text-foreground group-hover:text-accent transition-colors duration-200 leading-snug">
               {product.name}
             </h3>
             {available ? (
-              <p className="mt-1 text-sm font-medium text-accent tabular-nums">
+              <p className="mt-2 text-sm font-medium text-accent tabular-nums">
                 {formatPrice(product.price)}
               </p>
             ) : (
-              <p className="mt-1 text-sm text-secondary">{t.soon}</p>
+              <p className="mt-2 text-sm text-secondary">{t.soon}</p>
             )}
           </div>
         </Link>
@@ -73,7 +73,7 @@ export function ProductCard({
         href={`/boutique/${product.slug}`}
         className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
-        <div className="relative">
+        <div className="relative product-stage rounded-2xl overflow-hidden">
           <ProductImage
             src={product.imageUrl}
             alt={product.name}
@@ -86,23 +86,23 @@ export function ProductCard({
             </div>
           )}
         </div>
-        <div className="pt-4 md:pt-5">
-          <p className="text-label text-secondary mb-1">
+        <div className="pt-5 md:pt-6 text-center">
+          <p className="text-label text-secondary mb-1 tracking-widest uppercase">
             {categoryLabels[product.category]}
           </p>
           <h3
             className={`font-serif text-foreground group-hover:text-accent transition-colors duration-200 ${
-              large ? "text-2xl md:text-3xl" : "text-xl"
+              large ? "text-2xl md:text-3xl" : "text-xl md:text-2xl"
             }`}
           >
             {product.name}
           </h3>
           {available ? (
-            <p className="mt-1.5 text-sm font-medium text-accent tabular-nums">
+            <p className="mt-2 text-sm font-medium text-accent tabular-nums">
               {formatPrice(product.price)}
             </p>
           ) : (
-            <p className="mt-1.5 text-sm text-secondary">{t.soon}</p>
+            <p className="mt-2 text-sm text-secondary">{t.soon}</p>
           )}
         </div>
       </Link>

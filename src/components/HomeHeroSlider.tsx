@@ -14,8 +14,8 @@ interface HomeHeroSliderProps {
 function ChevronIcon({ direction }: { direction: "prev" | "next" }) {
   return (
     <svg
-      width="24"
-      height="24"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -56,7 +56,7 @@ export function HomeHeroSlider({ slides }: HomeHeroSliderProps) {
 
   return (
     <section
-      className="relative bg-background border-b border-border overflow-hidden"
+      className="relative bg-primary overflow-hidden"
       aria-label="سلايدر الصفحة الرئيسية"
       aria-roledescription="carousel"
       onMouseEnter={() => setPaused(true)}
@@ -64,8 +64,7 @@ export function HomeHeroSlider({ slides }: HomeHeroSliderProps) {
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
     >
-      {/* Slides */}
-      <div className="relative w-full aspect-[4/5] sm:aspect-[16/10] lg:aspect-[21/9] max-h-[85vh]">
+      <div className="relative w-full aspect-[4/5] sm:aspect-[16/9] lg:aspect-[21/9] max-h-[90vh]">
         {slides.map((slide, i) => {
           const src = slide.bannerUrl ?? slide.imageUrl;
           return (
@@ -85,41 +84,41 @@ export function HomeHeroSlider({ slides }: HomeHeroSliderProps) {
                 className="object-cover object-center"
                 sizes="100vw"
               />
-              {/* Soft overlay for controls readability */}
               <div
-                className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent pointer-events-none"
+                className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/10 pointer-events-none"
                 aria-hidden
               />
             </div>
           );
         })}
 
-        {/* Bottom info bar */}
-        <div className="absolute inset-x-0 bottom-0 z-20 px-5 sm:px-8 lg:px-12 pb-8 sm:pb-10 pt-24 bg-gradient-to-t from-black/60 to-transparent">
-          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
-            <div
-              key={product.id}
-              className="hero-slide-text text-white max-w-xl"
-              aria-live="polite"
-            >
-              <p className="text-label text-white/70 mb-2">{t.home.eyebrow}</p>
-              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl mb-2 leading-tight">
+        {count > 1 && (
+          <div className="absolute top-6 left-6 z-30 text-label text-white/60 tracking-widest" aria-hidden>
+            {String(active + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
+          </div>
+        )}
+
+        <div className="absolute inset-x-0 bottom-0 z-20 px-5 sm:px-10 lg:px-16 pb-10 sm:pb-14 pt-32">
+          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+            <div key={product.id} className="hero-slide-text text-white max-w-lg" aria-live="polite">
+              <p className="text-label text-white/60 mb-4">{t.home.eyebrow}</p>
+              <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl mb-4 leading-[1.1]">
                 {product.name}
               </h1>
-              <p className="text-sm sm:text-base text-white/80 mb-1">
-                {t.product.extrait}
-              </p>
-              <p className="text-lg font-medium text-amber-200 tabular-nums">
+              <p className="text-sm text-white/70 mb-2 tracking-wide">{t.product.extrait}</p>
+              <p className="font-serif text-2xl text-amber-200/90 tabular-nums">
                 {formatPrice(product.price)}
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-3 shrink-0">
-              <Button href={`/boutique/${product.slug}`}>{t.home.ctaOrder}</Button>
+              <Button href={`/boutique/${product.slug}`} size="lg">
+                {t.home.ctaOrder}
+              </Button>
               <Button
                 href="/boutique"
                 variant="outline"
-                className="!border-white/40 !text-white hover:!bg-white/10"
+                className="!border-white/50 !text-white hover:!bg-white/10 !bg-transparent"
               >
                 {t.home.ctaCollection}
               </Button>
@@ -127,13 +126,12 @@ export function HomeHeroSlider({ slides }: HomeHeroSliderProps) {
           </div>
         </div>
 
-        {/* Nav arrows */}
         {count > 1 && (
           <>
             <button
               type="button"
               onClick={prev}
-              className="absolute top-1/2 -translate-y-1/2 right-4 sm:right-6 z-30 flex items-center justify-center w-11 h-11 rounded-full border border-white/30 bg-black/20 backdrop-blur-sm text-white hover:bg-black/40 transition-colors"
+              className="absolute top-1/2 -translate-y-1/2 right-4 sm:right-8 z-30 flex items-center justify-center w-11 h-11 rounded-full border border-white/25 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 transition-colors cursor-pointer"
               aria-label="الشريحة السابقة"
             >
               <ChevronIcon direction="prev" />
@@ -141,7 +139,7 @@ export function HomeHeroSlider({ slides }: HomeHeroSliderProps) {
             <button
               type="button"
               onClick={next}
-              className="absolute top-1/2 -translate-y-1/2 left-4 sm:left-6 z-30 flex items-center justify-center w-11 h-11 rounded-full border border-white/30 bg-black/20 backdrop-blur-sm text-white hover:bg-black/40 transition-colors"
+              className="absolute top-1/2 -translate-y-1/2 left-4 sm:left-8 z-30 flex items-center justify-center w-11 h-11 rounded-full border border-white/25 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 transition-colors cursor-pointer"
               aria-label="الشريحة التالية"
             >
               <ChevronIcon direction="next" />
@@ -150,45 +148,24 @@ export function HomeHeroSlider({ slides }: HomeHeroSliderProps) {
         )}
       </div>
 
-      {/* Dots + trust badges */}
-      <div className="bg-background border-t border-border">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          {count > 1 && (
-            <div
-              className="flex items-center gap-2"
-              role="tablist"
-              aria-label="اختيار الشريحة"
-            >
-              {slides.map((slide, i) => (
-                <button
-                  key={slide.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={i === active}
-                  aria-label={slide.name}
-                  onClick={() => goTo(i)}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    i === active
-                      ? "w-10 bg-accent"
-                      : "w-2 bg-border hover:bg-accent/50"
-                  }`}
-                />
-              ))}
-            </div>
-          )}
-
-          <div className="flex flex-wrap justify-center gap-2">
-            <span className="text-label text-accent border border-accent/25 bg-accent/5 px-3 py-1.5 rounded-full">
-              {t.cod}
-            </span>
-            <span className="text-label text-secondary border border-border px-3 py-1.5 rounded-full">
-              {t.deliveryMorocco}
-            </span>
+      {count > 1 && (
+        <div className="bg-surface border-t border-border py-4">
+          <div className="max-w-7xl mx-auto px-5 sm:px-10 flex justify-center gap-2">
+            {slides.map((slide, i) => (
+              <button
+                key={slide.id}
+                type="button"
+                aria-label={slide.name}
+                onClick={() => goTo(i)}
+                className={`h-0.5 rounded-full transition-all duration-300 cursor-pointer ${
+                  i === active ? "w-12 bg-accent" : "w-6 bg-border hover:bg-accent/40"
+                }`}
+              />
+            ))}
           </div>
         </div>
-      </div>
+      )}
 
-      {/* Hidden link for SEO / keyboard */}
       <Link
         href={`/boutique/${product.slug}`}
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:right-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-accent focus:text-white rounded-full"
