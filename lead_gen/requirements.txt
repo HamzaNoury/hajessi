@@ -1,0 +1,8 @@
+python-dotenv>=1.0.0
+googlemaps>=4.10.0
+requests>=2.32.0
+pandas>=2.2.0
+supabase>=2.10.0
+playwright>=1.49.0
+flask>=3.0.0
+streamlit>=1.40.0
